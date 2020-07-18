@@ -15,15 +15,5 @@ def get_game_suffix(date, team1, team2):
     return suffix
 
 def get_player_suffix(name):
-    normalized_name = unicodedata.normalize('NFD', name).encode('ascii', 'ignore').decode("utf-8")
-    names = normalized_name.split(' ')[1:]
-    for last_name in names:
-        initial = last_name[0].lower()
-        r = get(f'https://www.basketball-reference.com/players/{initial}')
-        if r.status_code==200:
-            soup = BeautifulSoup(r.content, 'html.parser')
-            for table in soup.find_all('table', attrs={'id': 'players'}):
-                for anchor in table.find_all('a'):
-                    if anchor.text in name:
-                        suffix = anchor.attrs['href']
-                        return suffix
+    suffix_template=f"%2Fplayers%2F{name[0]}%2F{name}.html"
+    return suffix_template
